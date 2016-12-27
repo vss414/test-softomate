@@ -8,6 +8,7 @@ class m161226_050615_create_tables extends Migration
     {
         $this->createTable('user', [
             'id' => 'pk',
+            'name' => 'VARCHAR(255) NOT NULL',
             'email' => 'VARCHAR(255) NOT NULL',
             'password' => 'VARCHAR(64) NOT NULL',
             'token' => 'VARCHAR(64) NOT NULL',

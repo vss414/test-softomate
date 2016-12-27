@@ -42,6 +42,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'api/v1/users/<token:\w+>' => 'api/v1/users',
+                'api/v1/merchants/<id:\d+>' => 'api/v1/merchants',
+                'api/v1/coupons/mid/<merchant_id:\d+>' => 'api/v1/merchant-coupons',
+                'api/v1/coupons/uid/<user_id:\d+>' => 'api/v1/user-coupons',
             ],
         ],
     ],
