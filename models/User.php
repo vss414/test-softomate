@@ -77,7 +77,7 @@ class User extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->token = md5(time());
+                $this->token = bin2hex(openssl_random_pseudo_bytes(16));
                 $this->password = md5($this->password);
             } elseif ($this->password != $this->oldAttributes['password']) {
                 $this->password = md5($this->password);
