@@ -2,6 +2,7 @@
 
 namespace app\module\api\controllers;
 
+use app\models\Coupon;
 use app\models\Merchant;
 use app\models\User;
 use yii\web\Controller;
@@ -50,5 +51,44 @@ class V1Controller extends Controller
         }
 
         return json_encode($response);
+    }
+
+    public function actionUserCoupons($user_id)
+    {
+        /** @var User $user */
+        $user = User::find()->where(['id' => $user_id])->one();
+
+        $response = ['coupons' => $this->getCouponJson($user)];
+
+        return json_encode($response);
+    }
+
+    public function actionMerchantCoupons($merchant_id)
+    {
+        /** @var Merchant $merchant */
+        $merchant = Merchant::find()->where(['id' => $merchant_id])->one();
+
+        $response = ['coupons' => $this->getCouponJson($merchant)];
+
+        return json_encode($response);
+    }
+
+    /**
+     * @param Merchant | User $model
+     * @return array
+     */
+    private function getCouponJson($model)
+    {
+        $list = [];
+        if ($model && $coupons = $model->getCoupons()->all()) {
+            /** @var Coupon $coupon */
+            foreach ($coupons as $coupon) {
+                $list[] = [
+                    'title' => $coupon->title,
+                    'code' => $coupon->code
+                ];
+            }
+        }
+        return $list;
     }
 }
