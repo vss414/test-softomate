@@ -1,5 +1,4 @@
-# test-softomate
-Test project for Softomate
+# Test project for Softomate
 
 
 Для работы с базой данных необходимо создать файл local_db.php 
