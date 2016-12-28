@@ -22,6 +22,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'name',
             'description:ntext',
+            [
+                'attribute' => 'merchantCoupons',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $response = '';
+
+                    /** @var \app\models\Merchant $model */
+                    /** @var \app\models\MerchantCoupon $item */
+                    foreach ($model->merchantCoupons as $item) {
+                        $response .= "$item->title<br>";
+                    }
+
+                    return $response;
+                },
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',

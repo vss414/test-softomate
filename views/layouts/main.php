@@ -38,6 +38,8 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Users', 'url' => ['/admin/user']],
             ['label' => 'Merchants', 'url' => ['/admin/merchant']],
+            ['label' => 'Merchant coupons', 'url' => ['/admin/merchant-coupon']],
+            ['label' => 'User coupons', 'url' => ['/admin/user-coupon']],
 
             /*Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
