@@ -12,7 +12,6 @@ use Yii;
  * @property string $description
  *
  * @property MerchantCoupon[] $merchantCoupons
- * @property Coupon[] $coupons
  */
 class Merchant extends \yii\db\ActiveRecord
 {
@@ -33,6 +32,7 @@ class Merchant extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
         ];
     }
 
@@ -54,13 +54,5 @@ class Merchant extends \yii\db\ActiveRecord
     public function getMerchantCoupons()
     {
         return $this->hasMany(MerchantCoupon::className(), ['merchant_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCoupons()
-    {
-        return $this->hasMany(Coupon::className(), ['id' => 'coupon_id'])->viaTable('merchant_coupon', ['merchant_id' => 'id']);
     }
 }

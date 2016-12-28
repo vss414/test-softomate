@@ -15,7 +15,6 @@ use Yii;
  * @property string $created
  *
  * @property UserCoupon[] $userCoupons
- * @property Coupon[] $coupons
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -37,6 +36,7 @@ class User extends \yii\db\ActiveRecord
             [['token', 'created'], 'safe'],
             [['name', 'email'], 'string', 'max' => 255],
             [['password', 'token'], 'string', 'max' => 64],
+            [['email'], 'unique'],
             [['token'], 'unique'],
             ['email', 'email'],
         ];
@@ -63,14 +63,6 @@ class User extends \yii\db\ActiveRecord
     public function getUserCoupons()
     {
         return $this->hasMany(UserCoupon::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCoupons()
-    {
-        return $this->hasMany(Coupon::className(), ['id' => 'coupon_id'])->viaTable('user_coupon', ['user_id' => 'id']);
     }
 
     public function beforeSave($insert)

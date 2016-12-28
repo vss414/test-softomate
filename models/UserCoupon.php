@@ -9,9 +9,9 @@ use Yii;
  *
  * @property integer $id
  * @property integer $user_id
- * @property integer $coupon_id
+ * @property string $title
+ * @property integer $code
  *
- * @property Coupon $coupon
  * @property User $user
  */
 class UserCoupon extends \yii\db\ActiveRecord
@@ -30,10 +30,10 @@ class UserCoupon extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'coupon_id'], 'required'],
-            [['user_id', 'coupon_id'], 'integer'],
-            [['user_id', 'coupon_id'], 'unique', 'targetAttribute' => ['user_id', 'coupon_id'], 'message' => 'The combination of User ID and Coupon ID has already been taken.'],
-            [['coupon_id'], 'exist', 'skipOnError' => true, 'targetClass' => Coupon::className(), 'targetAttribute' => ['coupon_id' => 'id']],
+            [['user_id', 'title'], 'required'],
+            [['user_id', 'code'], 'integer'],
+            [['title'], 'string', 'max' => 255],
+            [['user_id', 'title'], 'unique', 'targetAttribute' => ['user_id', 'title'], 'message' => 'The combination of User ID and Title has already been taken.'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -46,16 +46,9 @@ class UserCoupon extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
-            'coupon_id' => Yii::t('app', 'Coupon ID'),
+            'title' => Yii::t('app', 'Title'),
+            'code' => Yii::t('app', 'Code'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCoupon()
-    {
-        return $this->hasOne(Coupon::className(), ['id' => 'coupon_id']);
     }
 
     /**

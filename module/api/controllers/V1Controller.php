@@ -2,15 +2,13 @@
 
 namespace app\module\api\controllers;
 
-use app\models\Coupon;
 use app\models\Merchant;
+use app\models\MerchantCoupon;
 use app\models\User;
+use app\models\UserCoupon;
 use yii\web\Controller;
-use yii\web\Response;
 
-/**
- * Default controller for the `api` module
- */
+
 class V1Controller extends Controller
 {
     public function init()
@@ -39,7 +37,7 @@ class V1Controller extends Controller
     public function actionMerchants($id = null)
     {
         /** @var Merchant $merchant */
-        $merchant = Merchant::find()->where($id)->one();
+        $merchant = Merchant::find()->where(['id' => $id])->one();
 
         $response = ['merchant' => null];
 
@@ -55,33 +53,31 @@ class V1Controller extends Controller
 
     public function actionUserCoupons($user_id)
     {
-        /** @var User $user */
-        $user = User::find()->where(['id' => $user_id])->one();
+        $coupons = UserCoupon::find()->where(['user_id' => $user_id])->all();
 
-        $response = ['coupons' => $this->getCouponJson($user)];
+        $response = ['coupons' => $this->getCouponJson($coupons)];
 
         return json_encode($response);
     }
 
     public function actionMerchantCoupons($merchant_id)
     {
-        /** @var Merchant $merchant */
-        $merchant = Merchant::find()->where(['id' => $merchant_id])->one();
+        $coupons = MerchantCoupon::find()->where(['merchant_id' => $merchant_id])->all();
 
-        $response = ['coupons' => $this->getCouponJson($merchant)];
+        $response = ['coupons' => $this->getCouponJson($coupons)];
 
         return json_encode($response);
     }
 
     /**
-     * @param Merchant | User $model
+     * @param $coupons
      * @return array
      */
-    private function getCouponJson($model)
+    private function getCouponJson($coupons)
     {
         $list = [];
-        if ($model && $coupons = $model->getCoupons()->all()) {
-            /** @var Coupon $coupon */
+        if ($coupons) {
+            /** @var UserCoupon | MerchantCoupon $coupon */
             foreach ($coupons as $coupon) {
                 $list[] = [
                     'title' => $coupon->title,

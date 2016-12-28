@@ -9,9 +9,9 @@ use Yii;
  *
  * @property integer $id
  * @property integer $merchant_id
- * @property integer $coupon_id
+ * @property string $title
+ * @property integer $code
  *
- * @property Coupon $coupon
  * @property Merchant $merchant
  */
 class MerchantCoupon extends \yii\db\ActiveRecord
@@ -30,10 +30,10 @@ class MerchantCoupon extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['merchant_id', 'coupon_id'], 'required'],
-            [['merchant_id', 'coupon_id'], 'integer'],
-            [['merchant_id', 'coupon_id'], 'unique', 'targetAttribute' => ['merchant_id', 'coupon_id'], 'message' => 'The combination of Merchant ID and Coupon ID has already been taken.'],
-            [['coupon_id'], 'exist', 'skipOnError' => true, 'targetClass' => Coupon::className(), 'targetAttribute' => ['coupon_id' => 'id']],
+            [['merchant_id', 'title'], 'required'],
+            [['merchant_id', 'code'], 'integer'],
+            [['title'], 'string', 'max' => 255],
+            [['merchant_id', 'title'], 'unique', 'targetAttribute' => ['merchant_id', 'title'], 'message' => 'The combination of Merchant ID and Title has already been taken.'],
             [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Merchant::className(), 'targetAttribute' => ['merchant_id' => 'id']],
         ];
     }
@@ -46,16 +46,9 @@ class MerchantCoupon extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'merchant_id' => Yii::t('app', 'Merchant ID'),
-            'coupon_id' => Yii::t('app', 'Coupon ID'),
+            'title' => Yii::t('app', 'Title'),
+            'code' => Yii::t('app', 'Code'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCoupon()
-    {
-        return $this->hasOne(Coupon::className(), ['id' => 'coupon_id']);
     }
 
     /**
