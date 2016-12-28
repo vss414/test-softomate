@@ -17,6 +17,10 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
+        if(!\Yii::$app->user->identity) {
+            \Yii::$app->getResponse()->redirect('/site/login');
+        }
+
         parent::init();
 
         // custom initialization code goes here

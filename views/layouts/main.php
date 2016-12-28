@@ -33,27 +33,27 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
+
+    $items = [];
+
+    if (!Yii::$app->user->isGuest) {
+        $items = [
             ['label' => 'Users', 'url' => ['/admin/user']],
             ['label' => 'Merchants', 'url' => ['/admin/merchant']],
             ['label' => 'Merchant coupons', 'url' => ['/admin/merchant-coupon']],
             ['label' => 'User coupons', 'url' => ['/admin/user-coupon']],
+            ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ]
+        ];
+    } else {
+        $items[] = ['label' => 'Login', 'url' => ['/site/login']];
+    }
 
-            /*Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )*/
-        ],
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>
